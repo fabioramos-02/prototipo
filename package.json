@@ -1,0 +1,16 @@
+{
+  "name": "solicitacao-de-acesso",
+  "version": "1.0.0",
+  "description": "Prototipo de baixa fidelidade",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "liberação",
+    "de",
+    "acesso"
+  ],
+  "author": "Fabio Ramos",
+  "license": "ISC"
+}
