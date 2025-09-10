@@ -1,5 +1,6 @@
 # Solicitação para Criação de E-mail e Atendimento
 
+Acesse o autoatendimento em [https://www.autoatendimento.ms.gov.br/](https://www.autoatendimento.ms.gov.br/).  
 ## Fluxo da Solicitação
 
 1. **Preenchimento do Formulário de Solicitação de Acesso**
