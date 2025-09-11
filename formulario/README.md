@@ -1,34 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## MVP – Solicitação de Acesso e Criação de E-mail
 
-## Getting Started
+Protótipo funcional full‑stack baseado nos documentos em `docs/`:
 
-First, run the development server:
+- `docs/cenario-ideal.md`
+- `docs/requisitos.md`
+- `docs/solicitacao_email_atendimento.md`
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Arquitetura
+
+- Backend: Node.js + Express + SQLite (mock das integrações externas)
+- Frontend: React + Material UI (Stepper em 4 etapas)
+- Ambiente: Docker Compose (dois serviços: `backend` e `frontend`), rede `app-network`
+
+Como executar (Docker Compose)
+
+1) Requisitos: Docker + Docker Compose
+2) Suba os serviços:
+
+```
+docker-compose up --build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3) Acesse o frontend: http://localhost:3000
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+O frontend consome as APIs via `http://backend:5000` (DNS interno da rede do Compose).
 
-## Learn More
+Serviços
 
-To learn more about Next.js, take a look at the following resources:
+- backend (porta 5000): API Express + SQLite com volume persistente `dbdata`.
+- frontend (porta 3000): SPA React (Vite + MUI).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+APIs (Backend)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `GET /verificar-email/:cpf` → mock da API de e‑mail. Retorna `{ existe: true, email }` ou `{ existe: false }`.
+- `GET /buscar-dados/:cpf` → busca no SQLite. Se não existir, `{ encontrado: false }` e retorna dados mock do gestor (SGEO).
+- `POST /salvar-solicitacao` → grava solicitação no SQLite. Body: `{ cpf, dados }`.
+- `POST /notificar-gestor` → mock de notificação (retorna `{ sucesso: true }`).
+- `POST /enviar-sdp` → mock de abertura de incidente no SDP `{ incidente: "INC123456" }`.
 
-## Deploy on Vercel
+Banco (SQLite)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `usuarios (cpf, nome, telefone, emailContato, cargo, setor, termoAssinado BOOLEAN)`
+- `gestores (matricula, nome, secretaria, unidadeGestora, telefone, emailGestor, emailContatoGestor)`
+- `solicitacoes (id, cpf, dados, status, incidente)`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Frontend (Fluxo)
+
+Stepper com 4 etapas conforme `docs/requisitos.md`:
+
+1) Escolha do Serviço: checkboxes (e‑mail, login de rede, pasta compartilhamento) e tipo de e‑mail quando marcado.
+2) Dados do Colaborador: CPF dispara `verificar-email` e `buscar-dados` para autopreencher. Exibe alerta se já possuir e‑mail. Checkbox para confirmar Termo de Responsabilidade.
+3) Dados do Gestor: busca mock (SGEO) para preencher; permite edição e marcação de “necessita validação”.
+4) Revisão e Envio: resumo. Envio chama `salvar-solicitacao` → `notificar-gestor` → `enviar-sdp`; exibe nº do incidente.
+
+Estrutura
+
+- `server/` → Backend (Express + SQLite)
+  - `server.js`, `package.json`, `Dockerfile`
+- `frontend/` → Frontend (Vite + React + MUI)
+  - `src/` (App.tsx, componentes de etapas, api.ts)
+  - `Dockerfile`, `index.html`, `vite.config.ts`
+- `docker-compose.yml` → Orquestração com rede `app-network`
+
+Observações
+
+- O backend inicializa o banco e inclui um usuário de exemplo (CPF `12345678901`).
+- Variável `VITE_API_URL` é definida no serviço do frontend apontando para `http://backend:5000`.
+- O objetivo é simular o fluxo de ponta a ponta descrito em `docs/cenario-ideal.md`.
