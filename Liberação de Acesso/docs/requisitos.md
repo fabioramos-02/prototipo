@@ -92,3 +92,16 @@ Automatizar e padronizar o processo de solicitação de acesso de colaboradores/
 - Maior segurança jurídica e de auditoria (assinatura digital + logs)
 - Transparência para colaborador e gestor sobre o status da solicitação
 
+# 8. Fluxo
+
+```mermaid
+flowchart LR
+    A([Início - Solicitação de Acesso]) --> B[Preencher Formulário]
+    B --> C[Validar Dados Automaticamente]
+    C --> D[Gestor Aprova]
+    D --> E[Assinatura Digital]
+    E --> F[Integração com AD]
+    F --> G[Notificar Colaborador e Gestor]
+    G --> H([Acesso Liberado])
+```
+
