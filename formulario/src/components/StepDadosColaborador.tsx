@@ -1,6 +1,9 @@
-import React from 'react';
-import { Box, TextField, Typography, Grid } from '@mui/material';
-import { DadosColaborador } from '../types/formulario';
+import React from "react";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import { DadosColaborador } from "../types/formulario";
 
 interface Props {
     values: DadosColaborador;
@@ -8,15 +11,15 @@ interface Props {
 }
 
 const fields = [
-    { label: 'Nome completo', name: 'nome', required: true },
-    { label: 'Nome social', name: 'nomeSocial' },
-    { label: 'CPF', name: 'cpf', required: true },
-    { label: 'Telefone', name: 'telefone' },
-    { label: 'E-mail', name: 'emailColaborador' },
-    { label: 'Cidade', name: 'cidade' },
-    { label: 'UG/Setor', name: 'setor' },
-    { label: 'Cargo', name: 'cargo' },
-    { label: 'Tipo de usuário', name: 'tipoUsuario' },
+    { label: "Nome completo", name: "nome", required: true },
+    { label: "Nome social", name: "nomeSocial" },
+    { label: "CPF", name: "cpf", required: true },
+    { label: "Telefone", name: "telefone" },
+    { label: "E-mail", name: "emailColaborador" },
+    { label: "Cidade", name: "cidade" },
+    { label: "UG/Setor", name: "setor" },
+    { label: "Cargo", name: "cargo" },
+    { label: "Tipo de usuário", name: "tipoUsuario" },
 ];
 
 const StepDadosColaborador: React.FC<Props> = ({ values, onChange }) => (
@@ -24,20 +27,19 @@ const StepDadosColaborador: React.FC<Props> = ({ values, onChange }) => (
         <Typography variant="h6" gutterBottom>
             Dados do Colaborador
         </Typography>
-        <Grid container spacing={2}>
+        <Stack spacing={2}>
             {fields.map(({ label, name, required }) => (
-                <Grid item xs={12} sm={6} key={name}>
-                    <TextField
-                        label={label}
-                        name={name}
-                        value={values[name as keyof DadosColaborador] || ''}
-                        onChange={onChange}
-                        required={required}
-                        fullWidth
-                    />
-                </Grid>
+                <TextField
+                    key={name}
+                    label={label}
+                    name={name}
+                    value={values[name as keyof DadosColaborador] || ""}
+                    onChange={onChange}
+                    required={required}
+                    fullWidth
+                />
             ))}
-        </Grid>
+        </Stack>
     </Box>
 );
 
