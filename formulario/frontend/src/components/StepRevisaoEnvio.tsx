@@ -1,13 +1,14 @@
 import React from 'react';
 import { Box, Typography, Button, List, ListItem, ListItemText } from '@mui/material';
 
-interface Props {
+type Props = {
   values: Record<string, any>;
   onSubmit: () => void;
   onBack: () => void;
+  submitLabel?: string;
 }
 
-const StepRevisaoEnvio: React.FC<Props> = ({ values, onSubmit, onBack }) => {
+const StepRevisaoEnvio: React.FC<Props> = ({ values, onSubmit, onBack, submitLabel = 'Enviar' }) => {
   return (
     <Box>
       <Typography variant="h6" gutterBottom>Revisão e Envio</Typography>
@@ -19,9 +20,10 @@ const StepRevisaoEnvio: React.FC<Props> = ({ values, onSubmit, onBack }) => {
         ))}
       </List>
       <Button variant="outlined" onClick={onBack} sx={{ mr: 2 }}>Voltar</Button>
-      <Button variant="contained" color="primary" onClick={onSubmit}>Enviar Solicitação</Button>
+      <Button variant="contained" color="primary" onClick={onSubmit}>{submitLabel}</Button>
     </Box>
   );
 };
 
 export default StepRevisaoEnvio;
+
