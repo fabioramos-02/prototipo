@@ -1,45 +1,105 @@
 export default function Home() {
   return (
-    <main style={{ maxWidth: 900, margin: '0 auto', padding: 32, fontFamily: 'sans-serif' }}>
-      <h1>SETDIG - Solicitação de Acesso</h1>
-      <p>Solicite acesso aos Sistemas Institucionais mantidos pela SETDIG.</p>
-      <hr style={{ margin: '24px 0' }} />
-      <h2>Quem Necessita de Acesso?</h2>
-      <form style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-        <div style={{ display: 'flex', gap: 8 }}>
-          <input placeholder="Nome Completo do Colaborador *" style={{ flex: 1 }} />
-          <input placeholder="Nome Social do Colaborador" style={{ flex: 1 }} />
-        </div>
-        <div style={{ display: 'flex', gap: 8 }}>
-          <input placeholder="CPF do Colaborador/Servidor *" style={{ flex: 1 }} />
-          <input placeholder="Telefone do Colaborador/Servidor *" style={{ flex: 1 }} />
-        </div>
-        <div style={{ display: 'flex', gap: 8 }}>
-          <input placeholder="E-mail do Colaborador/Servidor *" style={{ flex: 1 }} />
-          <input placeholder="Confirmar e-mail" style={{ flex: 1 }} />
-        </div>
-        <div style={{ display: 'flex', gap: 8 }}>
-          <select style={{ flex: 1 }} defaultValue="">
-            <option value="" disabled>Selecione a Cidade *</option>
-            <option value="Campo Grande">Campo Grande</option>
-            <option value="Dourados">Dourados</option>
-            <option value="Três Lagoas">Três Lagoas</option>
-            {/* ...outras cidades... */}
-          </select>
-          <input placeholder="UG/Setor do Colaborador/Servidor *" style={{ flex: 1 }} />
-        </div>
-        <input placeholder="Cargo do Colaborador/Servidor *" />
-        <select defaultValue="">
-          <option value="" disabled>Selecione o tipo de usuário *</option>
-          <option value="Servidor">Servidor</option>
-          <option value="Terceirizado">Terceirizado</option>
-          <option value="Estagiário">Estagiário</option>
-        </select>
-        <div style={{ display: 'flex', gap: 8, marginTop: 24 }}>
-          <button type="button">Retornar</button>
-          <button type="submit" style={{ background: '#1976d2', color: '#fff', border: 'none', padding: '8px 24px', borderRadius: 4 }}>Avançar</button>
-        </div>
-      </form>
+    <main className="max-w-3xl mx-auto p-8 font-sans">
+      {/* Cabeçalho */}
+      <header className="mb-6">
+        <h1 className="text-2xl font-bold">SETDIG - Solicitação de Acesso</h1>
+        <p className="text-gray-600">
+          Solicite acesso aos Sistemas Institucionais mantidos pela SETDIG.
+        </p>
+        <hr className="my-6" />
+      </header>
+
+      {/* Formulário */}
+      <section>
+        <h2 className="text-xl font-semibold mb-4">Quem Necessita de Acesso?</h2>
+        <form className="flex flex-col gap-4">
+          {/* Nome completo e social */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Input label="Nome Completo do Colaborador *" required />
+            <Input label="Nome Social do Colaborador" />
+          </div>
+
+          {/* CPF e Telefone */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Input label="CPF do Colaborador/Servidor *" required />
+            <Input label="Telefone do Colaborador/Servidor *" required />
+          </div>
+
+          {/* Email */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Input label="E-mail do Colaborador/Servidor *" required type="email" />
+            <Input label="Confirmar e-mail" type="email" />
+          </div>
+
+          {/* Cidade e Setor */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Select label="Cidade do Colaborador/Servidor *" required options={["Campo Grande", "Dourados", "Três Lagoas"]} />
+            <Input label="UG/Setor do Colaborador/Servidor *" required />
+          </div>
+
+          {/* Cargo */}
+          <Input label="Cargo do Colaborador/Servidor *" required />
+
+          {/* Tipo de usuário */}
+          <Select
+            label="Tipo de Usuário *"
+            required
+            options={["Servidor", "Terceirizado", "Estagiário"]}
+          />
+
+          {/* Botões */}
+          <div className="flex gap-4 mt-6">
+            <Button variant="secondary">Retornar</Button>
+            <Button variant="primary" type="submit">Avançar</Button>
+          </div>
+        </form>
+      </section>
     </main>
+  );
+}
+
+/* Componentes auxiliares */
+function Input({ label, required, ...props }) {
+  return (
+    <label className="flex flex-col text-sm font-medium">
+      {label}
+      <input
+        className="border rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        required={required}
+        {...props}
+      />
+    </label>
+  );
+}
+
+function Select({ label, options = [], required }) {
+  return (
+    <label className="flex flex-col text-sm font-medium">
+      {label}
+      <select
+        className="border rounded-md p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        required={required}
+        defaultValue=""
+      >
+        <option value="" disabled>Selecione...</option>
+        {options.map(opt => (
+          <option key={opt} value={opt}>{opt}</option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function Button({ children, variant = "primary", ...props }) {
+  const base = "px-4 py-2 rounded-md font-medium";
+  const styles = {
+    primary: "bg-blue-600 text-white hover:bg-blue-700",
+    secondary: "border border-gray-400 text-gray-700 hover:bg-gray-100"
+  };
+  return (
+    <button className={`${base} ${styles[variant]}`} {...props}>
+      {children}
+    </button>
   );
 }
