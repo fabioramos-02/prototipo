@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState } from "react";
 import { Box, Stepper, Step, StepLabel, Button, Paper } from "@mui/material";
@@ -6,6 +5,10 @@ import StepEscolhaServico from "../components/StepEscolhaServico";
 import StepDadosColaborador from "../components/StepDadosColaborador";
 import StepDadosGestor from "../components/StepDadosGestor";
 import StepRevisaoEnvio from "../components/StepRevisaoEnvio";
+import { EscolhaServico, DadosColaborador, DadosGestor } from "../types/formulario";
+
+// Unifica os tipos para o formulário completo
+export type FormularioCompleto = EscolhaServico & DadosColaborador & DadosGestor;
 
 const steps = [
   "Escolha do Serviço",
@@ -14,7 +17,7 @@ const steps = [
   "Revisão e Envio"
 ];
 
-const initialValues = {
+const initialValues: FormularioCompleto = {
   // Etapa 1
   email: false,
   tipoEmail: "",
@@ -25,7 +28,7 @@ const initialValues = {
   nomeSocial: "",
   cpf: "",
   telefone: "",
-  email: "",
+  emailColaborador: "",
   cidade: "",
   setor: "",
   cargo: "",
@@ -42,9 +45,9 @@ const initialValues = {
 
 export default function FormularioMultiEtapas() {
   const [activeStep, setActiveStep] = useState(0);
-  const [values, setValues] = useState(initialValues);
+  const [values, setValues] = useState<FormularioCompleto>(initialValues);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setValues((prev) => ({
       ...prev,
