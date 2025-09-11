@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import Link from "next/link";
 import { Box, Stepper, Step, StepLabel, Button, Paper } from "@mui/material";
 import StepEscolhaServico from "../components/StepEscolhaServico";
 import StepDadosColaborador from "../components/StepDadosColaborador";
@@ -66,6 +67,11 @@ export default function FormularioMultiEtapas() {
   return (
     <Box sx={{ maxWidth: 800, mx: "auto", mt: 6 }}>
       <Paper sx={{ p: 4 }}>
+        <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
+          <Button component={Link} href="/assinaturas" variant="outlined" size="small">
+            Gerenciador de Assinaturas
+          </Button>
+        </Box>
         <Stepper activeStep={activeStep} alternativeLabel>
           {steps.map((label) => (
             <Step key={label}>

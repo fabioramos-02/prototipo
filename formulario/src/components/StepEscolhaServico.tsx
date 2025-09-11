@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, Typography, Checkbox, FormControlLabel, FormGroup, Collapse, Radio, RadioGroup } from '@mui/material';
+import Link from 'next/link';
+import { Box, Typography, Checkbox, FormControlLabel, FormGroup, Collapse, Radio, Button } from '@mui/material';
 import { EscolhaServico } from '../types/formulario';
 
 interface Props {
@@ -10,6 +11,11 @@ interface Props {
 const StepEscolhaServico: React.FC<Props> = ({ values, onChange }) => {
   return (
     <Box>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+        <Button component={Link} href="/assinaturas" variant="outlined" size="small">
+          Gerenciador de Assinaturas
+        </Button>
+      </Box>
       <Typography variant="h6" gutterBottom>Escolha da Solicitação</Typography>
       <FormGroup>
         <FormControlLabel control={<Checkbox checked={values.email} onChange={onChange} name="email" />} label="e-Mail" />
@@ -25,3 +31,4 @@ const StepEscolhaServico: React.FC<Props> = ({ values, onChange }) => {
 };
 
 export default StepEscolhaServico;
+
